@@ -39,9 +39,9 @@ void partA()
     write_ppm_header(&ppm);
 
     // For each pixel
-    for (int j = 0; j < height; ++j)
+    for (int j = height; j > 0; --j)
     {
-        for (int i = 0; i < width; ++i)
+        for (int i = width; i > 0; --i) 
         {
             // Create barycentric coordinates
             Vec2 p = {i, j};
@@ -64,13 +64,13 @@ void partA()
 
             // Squish the values to [0, 255] 
             if (r < 0)
-                r = 0;
+                r=abs(r);
 
             if (g < 0)
-                g = 0;
+                g=abs(g);
 
             if (b < 0)
-                b = 0;
+                b=abs(b);
 
             // Write the colours.
             ppm << (int)r << " " << (int)g << " " << (int)b << " ";
@@ -93,9 +93,9 @@ void partB()
     write_ppm_header(&hpppm);
 
     // For every pixel
-    for (int j = 0; j < height; ++j)
+    for (int j = height; j > 0; --j)
     {
-        for (int i = 0; i < width; ++i)
+        for (int i = width; i > 0; --i) 
         {
 
             // Get the barycentric coordinates
@@ -151,9 +151,9 @@ void partC()
     std::ofstream tri("triangle.ppm");
     write_ppm_header(&tri);
     // For every pixel
-    for (int j = 0; j < height; ++j)
+    for (int j = height; j > 0; --j)
     {
-        for (int i = 0; i < width; ++i)
+        for (int i = width; i > 0; --i) 
         {
 
             // Get the barycentric coordinates
@@ -199,9 +199,9 @@ void partD()
     Vec3 c2 = {0, 0, 255};
 
     // For every pixel.
-    for (int j = 0; j < height; ++j)
+    for (int j = height; j > 0; --j)
     {
-        for (int i = 0; i < width; ++i)
+        for (int i = width; i > 0; --i) 
         {
             // Get the barycentric coordinates
             Vec2 p = {i, j};
@@ -240,16 +240,16 @@ void partD()
 void partE()
 {
     // Create a lookup array by loading all the pixels in a 3D array.
-    double earthCoords[512][256][3];
+    double earthCoords[256][512][3];
     readEarthPPM(earthCoords);// Read the file see rasterizer_io.h
 
     std::ofstream texture("texture.ppm");
 
     write_ppm_header(&texture);
 
-    for (int j = 0; j < height; ++j)
+    for (int j = height; j > 0; --j)
     {
-        for (int i = 0; i < width; ++i)        
+        for (int i = width; i > 0; --i)        
         {
 
             // Get the barycentric coordinates
@@ -271,7 +271,7 @@ void partE()
                 int px = Puvx * 512;
                 int py = Puvy * 256;
 
-                texture << earthCoords[px][py][0] << " " << earthCoords[px][py][1] << " " << earthCoords[px][py][2] << " ";
+                texture << earthCoords[py][px][0] << " " << earthCoords[py][px][1] << " " << earthCoords[py][px][2] << " ";
             }
             else
             {
@@ -291,13 +291,13 @@ void partE()
 void partF()
 {
     // Read the earth.ppm and initialise the array.
-    double earthCoords[512][256][3];
+    double earthCoords[256][512][3];
     readEarthPPM(earthCoords);
 
     // For every pixel.
-    for (int j = 0; j < height; ++j)
+    for (int j = height; j > 0; --j)
     {
-        for (int i = 0; i < width; ++i)
+        for (int i = width; i > 0; --i) 
         {
             Vec2 p = {i, j};
             
@@ -324,10 +324,10 @@ void partF()
                     // Somewhere in Vancouver, Canada - Port of Vancouver?
                     // Using s = (THETA + PI)/2*PI and t = (PHI + PI/2) / PI
                     long double theta = (Puvx *(2L*M_PI)) - M_PI;  // longtitude
-                    long double phi = (Puvy * M_PI)-(M_PI/2L);  // latitude
+                    long double phi = (M_PI/2L)-(Puvy * M_PI);  // latitude
 
                     long double lng = theta*(180L/M_PI);//Convert to degrees.
-                    long double lat = -phi*(180L/M_PI);//Convert to degrees.
+                    long double lat = phi*(180L/M_PI);//Convert to degrees.
 
                     // Print latitude, and longtitude
                     std::cout << "lat/lng: " << lat << ", " << lng << std::endl;

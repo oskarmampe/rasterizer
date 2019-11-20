@@ -26,7 +26,7 @@ void write_ppm_header(std::ofstream* file)
  * Read the earth.ppm file.
  *  
 */
-void readEarthPPM(double earthCoords[512][256][3])
+void readEarthPPM(double earthCoords[256][512][3])
 {
     // Open the stream
     std::ifstream earth("earth.ppm");
@@ -53,7 +53,7 @@ void readEarthPPM(double earthCoords[512][256][3])
         earthCoords[x][y][2] = b;
 
         // Reset the rows
-        if (y == 255){
+        if (y == 511){
             y = -1;
             x++;
         }
